@@ -7,6 +7,8 @@ class Dot:
 
    movement_speed = 20
 
+   max_ticks = 500
+
    def __init__(self, circle, window, canvas, goal):
       self.circle = circle
       self.window = window
@@ -43,8 +45,15 @@ class Dot:
 
          self.checkCollision()
 
+         if self.tick > self.max_ticks:
+            self.dead = True
+
    def checkCollision(self):
-      if(self.x < 0 or self.x > 490 or self.y < 0 or self.y > 490):
+      if self.x < 0 or self.x > 490 or self.y < 0 or self.y > 490:
+         self.dead = True
+      elif self.x in range(0,300) and self.y in range(100,150):
+         self.dead = True
+      elif self.x in range(150,500) and self.y in range(300,350):
          self.dead = True
       elif self.x in range(self.goal[0], self.goal[2]) and self.y in range(self.goal[1], self.goal[3]):
          self.reached_goal = True
@@ -60,4 +69,23 @@ class Dot:
 
    def mutate(self):
       for move in self.movements:
-         
+         for i in range(2):
+            roll = random.randint(0,99)
+            if roll < 75:
+               # Do nothing
+               pass
+            elif roll < 95:
+               # slight change
+               move[i] = move[i] + random.randint(-self.movement_speed/10,self.movement_speed/10)
+            elif roll < 98:
+               move[i] = random.randint(-self.movement_speed,self.movement_speed)
+            elif roll < 100:
+               move[i] = -move[i]
+            else:
+               print("Something darn messed up")
+
+            if move[i] < -self.movement_speed:
+               move[i] = -self.movement_speed
+            if move[i] > self.movement_speed:
+               move[i] = self.movement_speed
+
