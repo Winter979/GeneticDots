@@ -20,24 +20,31 @@ class Dot:
 
       self.movements = []
 
+      self.tick = 0
+      self.movement_length = 0
+
    def isActive(self):
       return not self.dead and not self.reached_goal
 
    def move(self):
       if self.isActive():
-         x_vel = random.randint(-self.movement_speed,self.movement_speed)
-         y_vel = random.randint(-self.movement_speed,self.movement_speed)
 
+         if self.tick >= self.movement_length:
+            x_vel = random.randint(-self.movement_speed,self.movement_speed)
+            y_vel = random.randint(-self.movement_speed,self.movement_speed)
+            self.movements.append([x_vel, y_vel])
+         else:
+            x_vel = self.movements[self.tick][0]
+            y_vel = self.movements[self.tick][1]
+
+         self.tick = self.tick +1 
          self.canvas.move(self.circle, x_vel, y_vel)
-
-         self.movements.append([x_vel, y_vel])
-
          self.updateCoods()
 
          self.checkCollision()
 
    def checkCollision(self):
-      if(self.x < 0 or self.x > 990 or self.y < 0 or self.y > 990):
+      if(self.x < 0 or self.x > 490 or self.y < 0 or self.y > 490):
          self.dead = True
       elif self.x in range(self.goal[0], self.goal[2]) and self.y in range(self.goal[1], self.goal[3]):
          self.reached_goal = True
@@ -50,3 +57,7 @@ class Dot:
 
    def destroy(self):
       self.canvas.delete(self.circle)
+
+   def mutate(self):
+      for move in self.movements:
+         

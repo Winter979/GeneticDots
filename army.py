@@ -2,8 +2,10 @@
 
 from dot import Dot
 
+import copy
+
 class Army:
-   population = 1000
+   population = 500
    mutation_ratio = 0.1
 
    def __init__(self, window, canvas, x, y, goal):
@@ -24,7 +26,7 @@ class Army:
    def populateArmy(self):
 
       for minion in self.minions:
-         minion.destroy
+         minion.destroy()
          del minion
 
       self.minions = []
@@ -47,12 +49,25 @@ class Army:
 
       if not self.alive:
          self.mutateArmy()
-         self.populateArmy()
 
    def mutateArmy(self):
+
+      champion_value = 0
+      champion_path = self.minions[0].movements
+
       for minion in self.minions:
          value = self.calcualateReward(minion)
-         print(value)
+         if value > champion_value:
+            champion_path = minion.movements
+
+      self.populateArmy()
+
+      champion_length = len(champion_path)
+
+      for minion in self.minions:
+         minion.movements = copy.deepcopy(champion_path)
+         minion.movement_length = champion_length
+         minion.mutate()
 
 
    def calcualateReward(self, minion):

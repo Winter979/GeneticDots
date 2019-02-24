@@ -10,17 +10,17 @@ from tkinter import Tk, Canvas, W
 
 def move(window, army):
    army.move()
-   window.after(10, move, window, army)
+   window.after(33, move, window, army)
 
 def main():
    window = Tk()
-   canvas = Canvas(window, bg="white", height=1000, width=1000)
+   canvas = Canvas(window, bg="white", height=500, width=500)
    canvas.grid(row = 0, column = 0, sticky=W)
 
-   goal_coords = [500-10,900-10,500+10,900+10]
+   goal_coords = [250-10,450-10,250+10,450+10]
    goal = canvas.create_oval(goal_coords, outline="blue",fill="blue")
 
-   army = Army(window, canvas, 500, 50, goal_coords)
+   army = Army(window, canvas, 250, 50, goal_coords)
 
    move(window, army)
 
