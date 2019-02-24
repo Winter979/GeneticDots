@@ -5,23 +5,26 @@ from tkinter import Tk, Canvas
 
 class Dot:
 
-   movement_speed = 10
+   movement_speed = 20
 
-   def __init__(self, circle, window, canvas):
+   def __init__(self, circle, window, canvas, goal):
       self.circle = circle
       self.window = window
       self.canvas = canvas
       self.dead = False
 
+      self.goal = goal
+      self.reached_goal = False
+
       self.updateCoods()
 
       self.movements = []
 
-   def isDead(self):
-      return self.dead
+   def isActive(self):
+      return not self.dead and not self.reached_goal
 
    def move(self):
-      if not self.dead:
+      if self.isActive():
          x_vel = random.randint(-self.movement_speed,self.movement_speed)
          y_vel = random.randint(-self.movement_speed,self.movement_speed)
 
@@ -34,11 +37,16 @@ class Dot:
          self.checkCollision()
 
    def checkCollision(self):
-      if(self.x < 0 or self.x > 1000 or self.y < 0 or self.y > 1000):
+      if(self.x < 0 or self.x > 990 or self.y < 0 or self.y > 990):
          self.dead = True
+      elif self.x in range(self.goal[0], self.goal[2]) and self.y in range(self.goal[1], self.goal[3]):
+         self.reached_goal = True
 
    def updateCoods(self):
       coords = self.canvas.coords(self.circle)
 
       self.x = coords[0]
       self.y = coords[1]
+
+   def destroy(self):
+      self.canvas.delete(self.circle)
