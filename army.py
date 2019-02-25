@@ -53,7 +53,7 @@ class Army:
    def mutateArmy(self):
 
       champion_value = 0
-      champion_path = self.minions[0].movements
+      champion_path = self.minions[self.population-1].movements
 
       for minion in self.minions:
          value = self.calcualateReward(minion)
@@ -85,7 +85,7 @@ class Army:
       value = 0
 
       if minion.reached_goal:
-         value = 2500
+         value = 2000
       else:
          distance_x = pow(abs(self.goal_center[0] - minion.x),2)
          distance_y = pow(abs(self.goal_center[1] - minion.y),2)
@@ -94,6 +94,6 @@ class Army:
 
          value = 2000 - distance_to_goal
 
-      value = value - (minion.tick*.1)
+      value = value - (minion.tick*.2)
 
       return value

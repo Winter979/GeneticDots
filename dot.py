@@ -71,13 +71,16 @@ class Dot:
       for move in self.movements:
          for i in range(2):
             roll = random.randint(0,99)
-            if roll < 75:
+            if roll < 70:
                # Do nothing
                pass
-            elif roll < 95:
+            elif roll < 85:
                # slight change
                move[i] = move[i] + random.randint(-self.movement_speed/10,self.movement_speed/10)
-            elif roll < 98:
+            elif roll < 90:
+               # slight change
+               move[i] = move[i] + random.randint(-self.movement_speed/5,self.movement_speed/5)
+            elif roll < 95:
                move[i] = random.randint(-self.movement_speed,self.movement_speed)
             elif roll < 100:
                move[i] = -move[i]
